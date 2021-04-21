@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
+
+import "./App.css";
+
+import Header from "./components/header/header.componenet"
+import HomePage from "./pages/homepage/hompage.component";
+import ShopPage from "./pages/shop/shop.component"
+import SignInSignUp from "./pages/sign-in-sign-up/sign-in-sign-up.componenet"
+import { auth } from "./firebase/firebase.utils"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [ currentUser, setCurrentUser ] = useState(null)
+
+    useEffect(() => {
+        auth.onAuthStateChanged(user => {
+            setCurrentUser(user)
+            console.log(user)
+        })
+    }, [])
+
+    return (
+        <>  
+            <Header />
+            <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route exact path="/shop" component={ShopPage} />
+                <Route exact path="/sign-in" component={SignInSignUp} />
+            </Switch>
+        </>
+    );
 }
 
 export default App;
