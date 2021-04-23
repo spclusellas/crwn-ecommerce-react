@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import "./sign-in.styles.scss";
 
-import FormInput from "../form-input/form-input.component"
-import CustomButton from "../custom-button/custom-button.component"
+import FormInput from "../form-input/form-input.component";
+import CustomButton from "../custom-button/custom-button.component";
 
-import { signInWithGoogle } from "../../firebase/firebase.utils"
+import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
 
 const SignIn = () => {
     const [signInData, setSignInData] = useState({
@@ -13,9 +13,23 @@ const SignIn = () => {
         password: "",
     });
 
-    const handleSubmit = e => {};
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        const { email, password } = signInData;
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            setSignInData({
+                email: "",
+                password: "",
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const handleChange = e => {
-        signInData({
+        setSignInData({
             ...signInData,
             [e.target.name]: e.target.value,
         });
@@ -28,8 +42,12 @@ const SignIn = () => {
             <form onSubmit={handleSubmit}>
                 <FormInput name="email" type="email" label="Email" handleChange={handleChange} required />
                 <FormInput name="password" type="password" label="Password" handleChange={handleChange} required />
-                <CustomButton type="submit"> Sign In </CustomButton>
-                <CustomButton onClick={ signInWithGoogle } > Sign In with Google </CustomButton>
+                <div className="buttons">
+                    <CustomButton type="submit"> Sign In </CustomButton>
+                    <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+                        Sign In with Google
+                    </CustomButton>
+                </div>
             </form>
         </div>
     );
