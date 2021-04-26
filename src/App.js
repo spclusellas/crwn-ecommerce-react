@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
 
 import Header from "./components/header/header.componenet";
 import HomePage from "./pages/homepage/hompage.component";
 import ShopPage from "./pages/shop/shop.component";
-import SignInSignUp from "./pages/sign-in-sign-up/sign-in-sign-up.componenet";
+import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.componenet";
 import { auth, createUserDocument } from "./firebase/firebase.utils";
+import { setCurrentUser } from "./redux/user/user.actions"
 
 function App() {
-    const [currentUser, setCurrentUser] = useState(null);
+    const dispatch = useDispatch()
+    const currentUser = useSelector(state => state.user.currentUser);
 
     let unsuscribeFromAuth = null;
 
@@ -19,26 +22,26 @@ function App() {
             if (user) {
                 const userRef = await createUserDocument(user);
                 userRef.onSnapshot(snapShot => {
-                    setCurrentUser({
+                    dispatch(setCurrentUser({
                         id: snapShot.id,
                         ...snapShot.data(),
-                    });
+                    }))
                 });
             } else {
-                setCurrentUser(null);
+                dispatch(setCurrentUser(null))
             }
         });
-        console.log(currentUser)
+
         return () => setCurrentUser(null);
     }, []);
 
     return (
         <>
-            <Header currentUser={currentUser} />
+            <Header />
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/shop" component={ShopPage} />
-                <Route exact path="/sign-in" component={SignInSignUp} />
+                <Route exact path="/sign-in" render={() => currentUser ? (<Redirect to="/" />) : (<SignInSignUpPage />)} />
             </Switch>
         </>
     );
