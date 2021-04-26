@@ -9,7 +9,6 @@ import "./cart-icon.styles.scss"
 const CartIcon = () => {
 
     const dispatch = useDispatch()
-    const toggleCardHidden = useSelector(state => state.card.toggleCardHidden)
 
     const handleClick = e => {
         dispatch(toggleCartHidden())

@@ -11,7 +11,7 @@ import "./header.styles.scss";
 
 const Header = () => {
     const currentUser = useSelector(state => state.user.currentUser);
-    const toggleCardHidden = useSelector(state => state.card.hidden)
+    const toggleCartHidden = useSelector(state => state.cart.hidden)
 
     return (
         <div className="header">
@@ -36,7 +36,7 @@ const Header = () => {
                 )}
                 <CartIcon />
             </div>
-            { toggleCardHidden ? null:  (<CartDropdown />)  }
+            { toggleCartHidden ? null:  (<CartDropdown />)  }
         </div>
     );
 };
