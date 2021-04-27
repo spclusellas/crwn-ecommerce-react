@@ -1,25 +1,38 @@
 import React from 'react'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { withRouter } from "react-router-dom"
 
 import CartItem from "../cart-item/cart-item.component"
 import CustomButton from "../custom-button/custom-button.component"
+import { selectCartItems } from "../../redux/cart/cart.selector"
+import { toggleCartHidden } from "../../redux/cart/cart.actions"
 
 import "./cart-dropdown.styles.scss"
 
-const CartDropdown = () => {
+const CartDropdown = ({ history }) => {
 
-    const cartItems = useSelector(state => state.cart.cartItems)
-    console.log(cartItems);
+    const dispatch = useDispatch()
+    const cartItems = useSelector(selectCartItems)
+
+    const handleButtonClick = () => {
+        dispatch(toggleCartHidden())
+        history.push("/checkout")
+    }
+
     return (
         <div className="cart-dropdown">
             <div className="class-items">
-                { cartItems.map( cartItem => <CartItem key={cartItem.id} item={cartItem} /> ) }
+                { cartItems.length ? 
+                cartItems.map( cartItem => (<CartItem key={cartItem.id} item={cartItem} /> ))  
+                :
+                <span className="empty-message">Your cart is empty</span>
+                }
             </div>
-            <CustomButton>
+            <CustomButton onClick={handleButtonClick} >
                 GO TO CHECKOUT
             </CustomButton>
         </div>
     )
 }
 
-export default CartDropdown
+export default withRouter(CartDropdown)
