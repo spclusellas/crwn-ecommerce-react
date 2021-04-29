@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import StripeButton from "../../components/stripe-button/stripe-button.component"
