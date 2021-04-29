@@ -43,8 +43,8 @@ function App() {
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/sign-in" render={() => currentUser ? (<Redirect to="/" />) : (<SignInSignUpPage />)} />
-                <Route exact path="/shop" component={ShopPage} />
                 <Route exact path="/checkout" component={CheckoutPage} />
+                <Route path="/shop" component={ShopPage} />
             </Switch>
         </>
     );
