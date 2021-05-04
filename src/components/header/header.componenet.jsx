@@ -10,36 +10,38 @@ import { selectCurrentUser } from "../../redux/user/user.selector"
 import { selectCartHidden } from "../../redux/cart/cart.selector"
 
 import "./header.styles.scss";
+import { HeaderContainer, LogoContainer, OptionDiv, OptionLink, OptionsContainer } from "./header.styles"
+
 
 const Header = () => {
     const currentUser = useSelector(selectCurrentUser);
     const toggleCartHidden = useSelector(selectCartHidden)
 
     return (
-        <div className="header">
-            <Link to="/" className="logo-container">
+        <HeaderContainer>
+            <LogoContainer>
                 <Logo className="logo" />
-            </Link>
-            <div className="options">
-                <Link to="/shop" className="option">
+            </LogoContainer>
+            <OptionsContainer>
+                <OptionLink to="/shop">
                     Shop
-                </Link>
-                <Link to="/contact" className="option">
+                </OptionLink>
+                <OptionLink to="/contact">
                     Contact
-                </Link>
+                </OptionLink>
                 {currentUser ? (
-                    <div className="option" onClick={() => auth.signOut()}>
+                    <OptionsContainer onClick={() => auth.signOut()}>
                         {currentUser.displayName}
-                    </div>
+                    </OptionsContainer>
                 ) : (
-                    <Link to="/sign-in" className="option">
+                    <OptionLink to="/sign-in">
                         Sign In
-                    </Link>
+                    </OptionLink>
                 )}
                 <CartIcon />
-            </div>
+            </OptionsContainer>
             { toggleCartHidden ? null:  (<CartDropdown />)  }
-        </div>
+        </HeaderContainer>
     );
 };
 
