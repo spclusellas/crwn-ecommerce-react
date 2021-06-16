@@ -7,6 +7,7 @@ import { selectCollection } from "../../redux/shop/shop.selectors"
 import "./collection.styles.scss"
 
 const CollectionPage = ({ match }) => {
+    console.log("matchh", match);
     const collection = useSelector(state => selectCollection(state, match.params.collectionUrlParam));
     const { title, items } = collection
     return (

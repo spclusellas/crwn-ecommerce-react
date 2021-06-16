@@ -16,7 +16,6 @@ import { selectCurrentUser } from "./redux/user/user.selector";
 function App() {
     const dispatch = useDispatch();
     const currentUser = useSelector(selectCurrentUser);
-
     useEffect(() => {
         auth.onAuthStateChanged(async user => {
             if (user) {
